@@ -88,7 +88,7 @@ export default {
             })
           } else {
             this.$store.commit('user/save_login', res)
-            this.$router.push('/main')
+            this.$router.push('/student-graduation')
           }
         } catch (err) {
           console.log(err)

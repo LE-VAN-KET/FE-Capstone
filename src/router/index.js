@@ -60,7 +60,15 @@ const routes = [
       {
         path: '/users',
         name: 'users',
-        component: () => import('@/views/diplomas/users/index.vue')
+        component: () => import('@/views/diplomas/users/index.vue'),
+        beforeEach: (to, from, next) => {
+          const role = window.localStorage.getItem('access')
+          if (role === 'ROLE_Administrator BGD/DT') {
+            next()
+          } else {
+            next('/login')
+          }
+        }
       }
     ]
   },
@@ -79,6 +87,15 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  if (to.path === '/phoi' || to.path === '/user') {
+    const role = window.localStorage.getItem('access')
+    if (role === 'ROLE_Administrator BGD/DT') {
+      next()
+    } else {
+      next('/login')
+    }
+  }
+
   if (to.path === '/login' || to.path === '/') {
     next()
   } else {

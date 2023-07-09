@@ -11,13 +11,13 @@ export default {
         path: '/catalog',
         name: 'catalog',
         label: 'Danh mục tốt nghiệp',
-        icon: 'setting'
+        icon: 'tickets'
       },
       {
         path: '/phoi',
         name: 'phoi',
         label: 'Dữ liệu phôi bằng',
-        icon: 'user'
+        icon: 'collection-tag'
       },
       {
         path: '/diplomas',
@@ -30,12 +30,6 @@ export default {
             name: 'student-graduation',
             label: 'Văn bằng',
             icon: 's-grid'
-          },
-          {
-            path: '/statistics',
-            name: 'statistics',
-            label: 'Thống kê',
-            icon: 's-marketing'
           }
         ]
       },
@@ -43,7 +37,7 @@ export default {
         path: '/users',
         name: 'users',
         label: 'Quản lý người dùng',
-        icon: 'help',
+        icon: 'user',
         children: [
           {
             path: '/users',

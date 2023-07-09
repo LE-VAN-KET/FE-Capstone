@@ -76,12 +76,12 @@
           </el-table-column>
           <el-table-column prop="serialNumber" label="Số Hiệu Văn Bằng" width="140" align="center">
           </el-table-column>
-          <el-table-column label="Giao Dịch" align="center">
+          <!-- <el-table-column label="Giao Dịch" align="center">
             <template slot-scope="scope">
               <i v-if="scope.row.statusValidate === true" class="custom-icon el-icon-circle-check"></i>
               <i v-if="scope.row.statusValidate === false" class="custom-icon el-icon-warning"></i>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column label="Hành Động" align="center">
             <template slot-scope="scope">
               <el-button size="mini" @click="handleView(scope.$index, scope.row)"><i class="el-icon-view"></i></el-button>
@@ -126,21 +126,22 @@ export default {
       },
       avatar: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
       searchFormRules: {
-        serialNumber: [{
-          required: true,
-          message: 'Số hiệu văn bằng không đươc bỏ trống',
-          trigger: 'blur'
-        }],
-        fullName: [{
-          required: true,
-          message: 'Họ và tên không đươc bỏ trống',
-          trigger: 'blur'
-        }],
-        dateOfBirth: [{
-          required: true,
-          message: 'Ngày sinh không đươc bỏ trống',
-          trigger: 'blur'
-        }]
+        // serialNumber: [{
+        //   required: true,
+        //   message: 'Số hiệu văn bằng không đươc bỏ trống',
+        //   trigger: 'blur'
+        // }],
+        // fullName: [{
+        //   required: true,
+        //   message: 'Họ và tên không đươc bỏ trống',
+        //   trigger: 'blur'
+        // }],
+        // dateOfBirth: [{
+        //   required: true,
+        //   message: 'Ngày sinh không đươc bỏ trống',
+        //   trigger: 'blur'
+        // }
+        // ]
       },
       tableData: []
     }
@@ -166,6 +167,7 @@ export default {
             })
           } else {
             this.tableData = res
+            this.tableData = this.tableData.filter(dip => dip.statusValidate === true)
             this.tableData = this.tableData.map(dip => {
               dip.sex = dip.sex === 'MALE' ? 'Nam' : 'Nữ'
               return dip

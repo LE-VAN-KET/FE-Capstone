@@ -128,9 +128,14 @@
           <span style="margin-left: 10px">{{ scope.row.diplomaType }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Trạng thái" align="center" width="135">
+      <el-table-column label="Trạng thái" align="center" width="135" fixed="right">
         <template slot-scope="scope">
-          <el-select v-model="scope.row.status" placeholder="Select" @change="changeStatusDip($event, scope.row)">
+          <el-select v-if="scope.row.serialNumber != null" v-model="scope.row.status" placeholder="Select" @change="changeStatusDip($event, scope.row)">
+            <el-option v-for="item in statusList2" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+
+          <el-select v-else v-model="scope.row.status" placeholder="Select" @change="changeStatusDip($event, scope.row)">
             <el-option v-for="item in statusList" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
@@ -173,6 +178,10 @@ export default {
         label: 'Từ chối',
         value: 'REJECTED'
       }, {
+        label: 'Đã duyệt',
+        value: 'VERIFIED'
+      }],
+      statusList2: [{
         label: 'Đã hỏng',
         value: 'DAHONG'
       }, {
