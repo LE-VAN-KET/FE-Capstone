@@ -450,7 +450,7 @@ export default {
     this.form.rankingId = rankings.find(item => item.name.trim() === this.form.ranking.trim()).id
     this.form.diplomaTypeSymbol = diplomaTypes.find(item => item.name.trim() === this.form.diplomaType.trim()).symbol
     if (this.diploma.diplomaLink) {
-      this.diplomaLink = `http://10.148.0.6:8000/api/v1/diploma/file/${this.diploma.diplomaLink}`
+      this.diplomaLink = `http://34.124.130.151:8000/api/v1/diploma/file/${this.diploma.diplomaLink}`
     }
     console.log(this.diploma)
   },
