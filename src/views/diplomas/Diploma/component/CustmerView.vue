@@ -6,17 +6,20 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Mã học viên:" required prop="studentId" >
-            <el-input v-model="form.studentId" style="width: 180px" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.studentId" style="width: 180px" clearable></el-input>
+            <el-input v-else v-model="form.studentId" style="width: 180px" disabled></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Họ và tên:" required prop="fullName" >
-            <el-input v-model="form.fullName" style="width: 200px" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.fullName" style="width: 200px" clearable></el-input>
+            <el-input v-else v-model="form.fullName" style="width: 200px" disabled></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="Ngày sinh:" required prop="dateOfBirth" >
-            <el-date-picker type="date" placeholder="Ngày sinh" v-model="form.dateOfBirth" style="width: 150px"></el-date-picker>
+            <el-date-picker v-if="form.serialNumber == null" type="date" placeholder="Ngày sinh" v-model="form.dateOfBirth" style="width: 150px"></el-date-picker>
+            <el-date-picker  v-else type="date" placeholder="Ngày sinh" v-model="form.dateOfBirth" style="width: 150px" disabled></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -24,12 +27,21 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Nơi sinh:" required prop="placeOfOrigin" >
-            <el-input v-model="form.placeOfOrigin" style="width: 180px" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.placeOfOrigin" style="width: 180px" clearable></el-input>
+            <el-input v-else v-model="form.placeOfOrigin" style="width: 180px" disabled></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Giới tính:" required prop="sex" >
-            <el-select v-model="form.sex" placeholder="Select">
+            <el-select v-model="form.sex" placeholder="Select" v-if="form.serialNumber == null">
+              <el-option
+                v-for="item in sexs"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-select v-model="form.sex" placeholder="Select" v-else disabled>
               <el-option
                 v-for="item in sexs"
                 :key="item.value"
@@ -41,7 +53,8 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="Khóa học:" required prop="trainingCourse" >
-            <el-input v-model="form.trainingCourse" style="width: 150px" clearable></el-input>
+            <el-input  v-if="form.serialNumber == null" v-model="form.trainingCourse" style="width: 150px" clearable></el-input>
+            <el-input  v-else v-model="form.trainingCourse" style="width: 150px" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -49,7 +62,15 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Dân tộc:" required prop="indigenousId" >
-            <el-select v-model="form.indigenousId" placeholder="Select">
+            <el-select v-model="form.indigenousId" placeholder="Select" v-if="form.serialNumber == null">
+              <el-option
+                v-for="item in this.getIndigenous"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <el-select v-model="form.indigenousId" placeholder="Select" v-else disabled>
               <el-option
                 v-for="item in this.getIndigenous"
                 :key="item.id"
@@ -61,7 +82,15 @@
         </el-col>
         <el-col :span="7">
           <el-form-item label="Quốc tịch:" required prop="nationalityId" >
-            <el-select v-model="form.nationalityId" placeholder="Select">
+            <el-select v-model="form.nationalityId" placeholder="Select" v-if="form.serialNumber == null">
+              <el-option
+                v-for="item in this.getNationality"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <el-select v-model="form.nationalityId" placeholder="Select" v-else disabled>
               <el-option
                 v-for="item in this.getNationality"
                 :key="item.id"
@@ -73,7 +102,15 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="Xếp loại:" required prop="rankingId" >
-            <el-select v-model="form.rankingId" placeholder="Select">
+            <el-select v-model="form.rankingId" placeholder="Select" v-if="form.serialNumber == null">
+              <el-option
+                v-for="item in this.getRankings"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <el-select v-model="form.rankingId" placeholder="Select" v-else disabled>
               <el-option
                 v-for="item in this.getRankings"
                 :key="item.id"
@@ -88,12 +125,21 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Năm tốt nghiệp:" required prop="yearGraduation" >
-            <el-input-number v-model="form.yearGraduation" :min="2022" :max="2100" clearable></el-input-number>
+            <el-input-number v-if="form.serialNumber == null" v-model="form.yearGraduation" :min="2022" :max="2100" clearable></el-input-number>
+            <el-input-number v-else disabled v-model="form.yearGraduation" :min="2022" :max="2100" clearable></el-input-number>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Hình thức đào tạo:" required prop="modeOfStudy" >
-            <el-select v-model="form.modeOfStudy" placeholder="Mode Study">
+            <el-select v-model="form.modeOfStudy" placeholder="Mode Study"  v-if="form.serialNumber == null">
+              <el-option
+                v-for="item in modeStudies"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+             <el-select v-model="form.modeOfStudy" placeholder="Mode Study"  v-else disabled>
               <el-option
                 v-for="item in modeStudies"
                 :key="item.value"
@@ -105,7 +151,8 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="Đơn vị:" required prop="donvi" >
-            <el-input v-model="form.donvi" style="width: 200px" disabled></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.donvi" style="width: 200px"></el-input>
+            <el-input v-else disabled v-model="form.donvi" style="width: 200px"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -113,18 +160,20 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Số hiệu văn bằng:" prop="serialNumber" >
-            <el-input v-if="form.serialNumber == null || form.serialNumber == undefined" v-model="form.serialNumber" disabled></el-input>
-            <el-input v-else v-model="form.serialNumber" clearable></el-input>
+            <el-input v-if="form.serialNumber == null || form.serialNumber == undefined" v-model="form.serialNumber" clearable></el-input>
+            <el-input v-else v-model="form.serialNumber" disabled></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Số vào sổ:" required prop="referenceNumber" >
-            <el-input v-model="form.referenceNumber" style="width: 200px" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.referenceNumber" style="width: 200px" clearable></el-input>
+            <el-input v-else disabled v-model="form.referenceNumber" style="width: 200px" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="Người ký:" required prop="signer" >
-            <el-input v-model="form.signer" style="width: 150px" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.signer" style="width: 150px" clearable></el-input>
+            <el-input v-else disabled v-model="form.signer" style="width: 150px" clearable></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -132,12 +181,21 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Chức danh người ký:" prop="signerTitle" >
-            <el-input v-model="form.signerTitle" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.signerTitle" clearable></el-input>
+            <el-input v-else disabled v-model="form.signerTitle" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Loại yêu cầu:" required prop="reqTypeId" >
-             <el-select v-model="form.reqTypeId" placeholder="Select">
+             <el-select v-model="form.reqTypeId" placeholder="Select"  v-if="form.serialNumber == null">
+              <el-option
+                v-for="item in this.getReqTypes"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+            <el-select v-model="form.reqTypeId" placeholder="Select"   v-else disabled>
               <el-option
                 v-for="item in this.getReqTypes"
                 :key="item.id"
@@ -149,7 +207,15 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="Loại văn bằng:" required prop="diplomaTypeSymbol" >
-            <el-select v-model="form.diplomaTypeSymbol" placeholder="Select">
+            <el-select v-model="form.diplomaTypeSymbol" placeholder="Select" v-if="form.serialNumber == null">
+              <el-option
+                v-for="item in this.getDiplomaTypes"
+                :key="item.diplomaTypeSymbol"
+                :label="item.name"
+                :value="item.symbol">
+              </el-option>
+            </el-select>
+             <el-select v-model="form.diplomaTypeSymbol" placeholder="Select" v-else disabled>
               <el-option
                 v-for="item in this.getDiplomaTypes"
                 :key="item.diplomaTypeSymbol"
@@ -164,17 +230,20 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Tổng số tín chỉ:" prop="totalCredits" >
-            <el-input v-model="form.totalCredits" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.totalCredits" clearable></el-input>
+            <el-input v-else disabled v-model="form.totalCredits" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Quyết định số:" prop="decisionNumber" >
-            <el-input v-model="form.decisionNumber" style="width: 200px" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.decisionNumber" style="width: 200px" clearable></el-input>
+            <el-input v-else disabled v-model="form.decisionNumber" style="width: 200px" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="Quyết định thành lập hội đồng:" prop="decisionEstablishingCouncil" >
-            <el-input v-model="form.decisionEstablishingCouncil" style="width: 150px" clearable></el-input>
+            <el-input  v-if="form.serialNumber == null" v-model="form.decisionEstablishingCouncil" style="width: 150px" clearable></el-input>
+            <el-input  v-else disabled v-model="form.decisionEstablishingCouncil" style="width: 150px" clearable></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -182,17 +251,20 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Ngày nhập học:" prop="dateOfEnrollment" >
-            <el-date-picker type="date" placeholder="Ngày nhập học" v-model="form.dateOfEnrollment" style="width: 200px"></el-date-picker>
+            <el-date-picker v-if="form.serialNumber == null" type="date" placeholder="Ngày nhập học" v-model="form.dateOfEnrollment" style="width: 200px"></el-date-picker>
+            <el-date-picker v-else disabled type="date" placeholder="Ngày nhập học" v-model="form.dateOfEnrollment" style="width: 200px"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Ngày tốt nghiệp:" prop="dateOfGraduation" >
-            <el-date-picker type="date" placeholder="Ngày tốt nghiệp" v-model="form.dateOfGraduation" style="width: 200px"></el-date-picker>
+            <el-date-picker v-if="form.serialNumber == null" type="date" placeholder="Ngày tốt nghiệp" v-model="form.dateOfGraduation" style="width: 200px"></el-date-picker>
+            <el-date-picker v-else disabled type="date" placeholder="Ngày tốt nghiệp" v-model="form.dateOfGraduation" style="width: 200px"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="Ngoại ngữ:" prop="foreignLanguage" >
-            <el-input v-model="form.foreignLanguage" style="width: 150px" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.foreignLanguage" style="width: 150px" clearable></el-input>
+            <el-input v-else disabled v-model="form.foreignLanguage" style="width: 150px" clearable></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -200,17 +272,20 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="Cấp bậc ngoại ngữ:" prop="levelForeignLanguage" >
-            <el-input v-model="form.levelForeignLanguage" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.levelForeignLanguage" clearable></el-input>
+            <el-input v-else disabled v-model="form.levelForeignLanguage" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="Ngày bảo vệ:" prop="dateOfDefend" >
-            <el-date-picker type="date" placeholder="Ngày bảo vệ" v-model="form.dateOfDefend" style="width: 200px"></el-date-picker>
+            <el-date-picker v-if="form.serialNumber == null" type="date" placeholder="Ngày bảo vệ" v-model="form.dateOfDefend" style="width: 200px"></el-date-picker>
+            <el-date-picker v-else disabled type="date" placeholder="Ngày bảo vệ" v-model="form.dateOfDefend" style="width: 200px"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="Hội đồng thi:" prop="hoiDongThi" >
-            <el-input v-model="form.hoiDongThi" style="width: 150px" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.hoiDongThi" style="width: 150px" clearable></el-input>
+            <el-input v-else disabled v-model="form.hoiDongThi" style="width: 150px" clearable></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -218,7 +293,8 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-form-item label="GPA tích lũy:" prop="gpa" >
-            <el-input v-model="form.gpa" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" v-model="form.gpa" clearable></el-input>
+            <el-input v-else disabled v-model="form.gpa" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
@@ -245,7 +321,8 @@
 
         <el-col :span="7">
           <el-form-item label="Năm tốt nghiệp:" prop="yearGraduation" >
-            <el-input-number v-model="form.yearGraduation" :min="2022" :max="2100" clearable></el-input-number>
+            <el-input-number v-if="form.serialNumber == null" v-model="form.yearGraduation" :min="2022" :max="2100" clearable></el-input-number>
+            <el-input-number v-else disabled v-model="form.yearGraduation" :min="2022" :max="2100" clearable></el-input-number>
           </el-form-item>
         </el-col>
 
@@ -254,7 +331,8 @@
       <el-row :gutter="20">
         <el-col :span="20">
           <el-form-item label="Ghi chú:" prop="note" >
-            <el-input type="textarea" v-model="form.note" clearable></el-input>
+            <el-input v-if="form.serialNumber == null" type="textarea" v-model="form.note" clearable></el-input>
+            <el-input v-else disabled type="textarea" v-model="form.note" clearable></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -342,7 +420,7 @@ export default {
       }],
       loading: false,
       files: [],
-      apiUploadFile: 'http://34.143.181.194:8000/api/v1/diploma/upload-file',
+      apiUploadFile: 'http://34.124.130.151:8000/api/v1/diploma/upload-file',
       // headers: { Content-Type : 'multipart/form-data' }
       file: null,
       diplomaLink: '',
