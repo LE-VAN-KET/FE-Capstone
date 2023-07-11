@@ -285,7 +285,7 @@ export default {
         { id: 'PENDING', label: 'Chưa duyệt' }
       ],
       urlIpfs: 'https://ipfs.io/ipfs/',
-      urlBlockchain: 'http://34.124.130.151:8081/?tab=transactions&transId=',
+      urlBlockchain: 'http://34.143.181.194:8081/?tab=transactions&transId=',
       pdfsrc: null
     }
   },

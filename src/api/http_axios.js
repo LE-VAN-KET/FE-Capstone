@@ -2,13 +2,13 @@ import axios from 'axios'
 
 switch (process.env.NODE_ENV) {
   case 'production':
-    axios.defaults.baseURL = 'http://34.124.130.151:8000/api/v1'
+    axios.defaults.baseURL = 'http://34.143.181.194:8000/api/v1'
     break
   case 'test':
-    axios.defaults.baseURL = 'http://34.124.130.151:8000/api/v1'
+    axios.defaults.baseURL = 'http://34.143.181.194:8000/api/v1'
     break
   default:
-    axios.defaults.baseURL = 'http://34.124.130.151:8000/api/v1'
+    axios.defaults.baseURL = 'http://34.143.181.194:8000/api/v1'
 }
 
 axios.defaults.timeout = 1000
